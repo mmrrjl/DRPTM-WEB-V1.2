@@ -1,8 +1,8 @@
 export interface AntaresConfig {
-  apiKey: 8f4ec6a09e8e35eb:cfe0c7bf14d0b2e7;
-  deviceId: lynk32_hidro_try;
-  applicationId: hidro_try;
-  baseUrl?: https://platform.antares.id:8443/~/antares-cse/antares-id/hidro_try/lynk32_hidro_try;
+  apiKey: string;
+  deviceId: string;
+  applicationId: string;
+  baseUrl?: string;
 }
 
 export interface AntaresData {
