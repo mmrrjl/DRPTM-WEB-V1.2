@@ -18,7 +18,7 @@ export default function MultiMetricChart({ data, isLoading }: MultiMetricChartPr
       .map(reading => ({
         timestamp: reading.timestamp,
         temperature: reading.temperature,
-        humidity: reading.humidity,
+
         ph: reading.ph * 10, // Scale pH for better visualization
         waterLevel: reading.waterLevel,
         time: format(new Date(reading.timestamp), "HH:mm"),
@@ -38,10 +38,7 @@ export default function MultiMetricChart({ data, isLoading }: MultiMetricChartPr
               <div className="w-3 h-3 bg-red-500 rounded-sm"></div>
               <span className="text-slate-600">Temperature</span>
             </div>
-            <div className="flex items-center space-x-2 text-xs">
-              <div className="w-3 h-3 bg-blue-500 rounded-sm"></div>
-              <span className="text-slate-600">Humidity</span>
-            </div>
+
             <div className="flex items-center space-x-2 text-xs">
               <div className="w-3 h-3 bg-purple-500 rounded-sm"></div>
               <span className="text-slate-600">pH (×10)</span>
@@ -89,8 +86,8 @@ export default function MultiMetricChart({ data, isLoading }: MultiMetricChartPr
                       return [`${(value / 10).toFixed(1)}`, 'pH'];
                     } else if (name === 'temperature') {
                       return [`${value.toFixed(1)}°C`, 'Temperature'];
-                    } else if (name === 'humidity' || name === 'waterLevel') {
-                      return [`${value.toFixed(1)}%`, name === 'humidity' ? 'Humidity' : 'Water Level'];
+                    } else if (name === 'waterLevel') {
+                      return [`${value.toFixed(1)}%`, 'Water Level'];
                     }
                     return [value, name];
                   }}
@@ -102,13 +99,7 @@ export default function MultiMetricChart({ data, isLoading }: MultiMetricChartPr
                   strokeWidth={2}
                   dot={false}
                 />
-                <Line
-                  type="monotone"
-                  dataKey="humidity"
-                  stroke="#3b82f6"
-                  strokeWidth={2}
-                  dot={false}
-                />
+
                 <Line
                   type="monotone"
                   dataKey="ph"

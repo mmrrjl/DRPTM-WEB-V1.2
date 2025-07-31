@@ -107,7 +107,7 @@ export default function Dashboard() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Status Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <StatusCard
             title="Temperature"
             value={latestReading?.temperature ?? 0}
@@ -117,15 +117,7 @@ export default function Dashboard() {
             status={latestReading ? getTemperatureStatus(latestReading.temperature) : "unknown"}
             optimalRange="22-26°C"
           />
-          <StatusCard
-            title="Humidity"
-            value={latestReading?.humidity ?? 0}
-            unit="%"
-            icon="droplet"
-            trend={sensorReadings.length >= 2 ? latestReading!.humidity - sensorReadings[1].humidity : 0}
-            status={latestReading ? getHumidityStatus(latestReading.humidity) : "unknown"}
-            optimalRange="60-70%"
-          />
+
           <StatusCard
             title="pH Level"
             value={latestReading?.ph ?? 0}

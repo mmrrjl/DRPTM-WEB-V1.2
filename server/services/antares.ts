@@ -7,7 +7,6 @@ export interface AntaresConfig {
 
 export interface AntaresData {
   temperature: number;
-  humidity: number;
   ph: number;
   waterLevel: number;
 }
@@ -53,7 +52,6 @@ export class AntaresService {
       
       return {
         temperature: parseFloat(sensorData.temperature) || 0,
-        humidity: parseFloat(sensorData.humidity) || 0,
         ph: parseFloat(sensorData.ph) || 0,
         waterLevel: parseFloat(sensorData.waterLevel) || 0,
       };
@@ -90,7 +88,6 @@ export class AntaresService {
         
         return {
           temperature: parseFloat(sensorData.temperature) || 0,
-          humidity: parseFloat(sensorData.humidity) || 0,
           ph: parseFloat(sensorData.ph) || 0,
           waterLevel: parseFloat(sensorData.waterLevel) || 0,
         };

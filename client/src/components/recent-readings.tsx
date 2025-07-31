@@ -64,7 +64,7 @@ export default function RecentReadings({ data, isLoading }: RecentReadingsProps)
                 <tr className="border-b border-slate-200">
                   <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider pb-3">Time</th>
                   <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider pb-3">Temp</th>
-                  <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider pb-3">Humidity</th>
+
                   <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider pb-3">pH</th>
                   <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider pb-3">Water</th>
                 </tr>
@@ -78,9 +78,7 @@ export default function RecentReadings({ data, isLoading }: RecentReadingsProps)
                     <td className="py-3 text-sm text-slate-900">
                       {reading.temperature.toFixed(1)}°C
                     </td>
-                    <td className="py-3 text-sm text-slate-900">
-                      {reading.humidity.toFixed(0)}%
-                    </td>
+
                     <td className="py-3 text-sm text-slate-900">
                       {reading.ph.toFixed(1)}
                     </td>

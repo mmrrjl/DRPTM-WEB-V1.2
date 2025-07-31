@@ -4,7 +4,6 @@ export const sensorReadingSchema = z.object({
   id: z.string(),
   timestamp: z.string(),
   temperature: z.number(),
-  humidity: z.number(),
   ph: z.number(),
   waterLevel: z.number(),
   createdAt: z.string(),
@@ -12,7 +11,6 @@ export const sensorReadingSchema = z.object({
 
 export const insertSensorReadingSchema = z.object({
   temperature: z.number().min(-50).max(100),
-  humidity: z.number().min(0).max(100),
   ph: z.number().min(0).max(14),
   waterLevel: z.number().min(0).max(100),
 });
