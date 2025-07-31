@@ -51,9 +51,8 @@ export default function Dashboard() {
   };
 
   const getTemperatureStatus = (temp: number) => getOptimalityStatus(temp, 22, 26);
-  const getHumidityStatus = (humidity: number) => getOptimalityStatus(humidity, 60, 70);
   const getPhStatus = (ph: number) => getOptimalityStatus(ph, 5.5, 6.5);
-  const getWaterLevelStatus = (level: number) => level > 20 ? "optimal" : "low";
+  const getTdsLevelStatus = (tds: number) => getOptimalityStatus(tds, 800, 1200);
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -128,13 +127,13 @@ export default function Dashboard() {
             optimalRange="5.5-6.5"
           />
           <StatusCard
-            title="Water Level"
-            value={latestReading?.waterLevel ?? 0}
-            unit="%"
+            title="TDS Level"
+            value={latestReading?.tdsLevel ?? 0}
+            unit="ppm"
             icon="waves"
-            trend={sensorReadings.length >= 2 ? latestReading!.waterLevel - sensorReadings[1].waterLevel : 0}
-            status={latestReading ? getWaterLevelStatus(latestReading.waterLevel) : "unknown"}
-            optimalRange="Minimum: 20%"
+            trend={sensorReadings.length >= 2 ? latestReading!.tdsLevel - sensorReadings[1].tdsLevel : 0}
+            status={latestReading ? getTdsLevelStatus(latestReading.tdsLevel) : "unknown"}
+            optimalRange="800-1200 ppm"
           />
         </div>
 

@@ -66,7 +66,7 @@ export default function RecentReadings({ data, isLoading }: RecentReadingsProps)
                   <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider pb-3">Temp</th>
 
                   <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider pb-3">pH</th>
-                  <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider pb-3">Water</th>
+                  <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider pb-3">TDS</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -83,7 +83,7 @@ export default function RecentReadings({ data, isLoading }: RecentReadingsProps)
                       {reading.ph.toFixed(1)}
                     </td>
                     <td className="py-3 text-sm text-slate-900">
-                      {reading.waterLevel.toFixed(0)}%
+                      {reading.tdsLevel.toFixed(0)} ppm
                     </td>
                   </tr>
                 ))}

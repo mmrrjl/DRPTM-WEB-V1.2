@@ -36,7 +36,7 @@ export class MemStorage implements IStorage {
     this.alertSettings = {
       temperatureAlerts: true,
       phAlerts: true,
-      waterLevelAlerts: false,
+      tdsLevelAlerts: false,
     };
   }
 

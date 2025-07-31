@@ -135,9 +135,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       if (format === 'csv') {
-        const csvHeaders = 'timestamp,temperature,ph,waterLevel\n';
+        const csvHeaders = 'timestamp,temperature,ph,tdsLevel\n';
         const csvData = readings.map(r => 
-          `${r.timestamp},${r.temperature},${r.ph},${r.waterLevel}`
+          `${r.timestamp},${r.temperature},${r.ph},${r.tdsLevel}`
         ).join('\n');
         
         res.setHeader('Content-Type', 'text/csv');

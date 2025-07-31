@@ -20,7 +20,7 @@ export default function MultiMetricChart({ data, isLoading }: MultiMetricChartPr
         temperature: reading.temperature,
 
         ph: reading.ph * 10, // Scale pH for better visualization
-        waterLevel: reading.waterLevel,
+        tdsLevel: reading.tdsLevel / 10, // Scale TDS for better visualization (ppm/10)
         time: format(new Date(reading.timestamp), "HH:mm"),
       }))
       .reverse();
@@ -45,7 +45,7 @@ export default function MultiMetricChart({ data, isLoading }: MultiMetricChartPr
             </div>
             <div className="flex items-center space-x-2 text-xs">
               <div className="w-3 h-3 bg-green-500 rounded-sm"></div>
-              <span className="text-slate-600">Water Level</span>
+              <span className="text-slate-600">TDS Level (÷10)</span>
             </div>
           </div>
         </div>
@@ -86,8 +86,8 @@ export default function MultiMetricChart({ data, isLoading }: MultiMetricChartPr
                       return [`${(value / 10).toFixed(1)}`, 'pH'];
                     } else if (name === 'temperature') {
                       return [`${value.toFixed(1)}°C`, 'Temperature'];
-                    } else if (name === 'waterLevel') {
-                      return [`${value.toFixed(1)}%`, 'Water Level'];
+                    } else if (name === 'tdsLevel') {
+                      return [`${(value * 10).toFixed(0)} ppm`, 'TDS Level'];
                     }
                     return [value, name];
                   }}
@@ -109,7 +109,7 @@ export default function MultiMetricChart({ data, isLoading }: MultiMetricChartPr
                 />
                 <Line
                   type="monotone"
-                  dataKey="waterLevel"
+                  dataKey="tdsLevel"
                   stroke="#10b981"
                   strokeWidth={2}
                   dot={false}

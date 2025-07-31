@@ -5,14 +5,14 @@ export const sensorReadingSchema = z.object({
   timestamp: z.string(),
   temperature: z.number(),
   ph: z.number(),
-  waterLevel: z.number(),
+  tdsLevel: z.number(),
   createdAt: z.string(),
 });
 
 export const insertSensorReadingSchema = z.object({
   temperature: z.number().min(-50).max(100),
   ph: z.number().min(0).max(14),
-  waterLevel: z.number().min(0).max(100),
+  tdsLevel: z.number().min(0).max(2000),
 });
 
 export const systemStatusSchema = z.object({
@@ -29,13 +29,13 @@ export const systemStatusSchema = z.object({
 export const alertSettingsSchema = z.object({
   temperatureAlerts: z.boolean(),
   phAlerts: z.boolean(),
-  waterLevelAlerts: z.boolean(),
+  tdsLevelAlerts: z.boolean(),
 });
 
 export const insertAlertSettingsSchema = z.object({
   temperatureAlerts: z.boolean(),
   phAlerts: z.boolean(),
-  waterLevelAlerts: z.boolean(),
+  tdsLevelAlerts: z.boolean(),
 });
 
 export type SensorReading = z.infer<typeof sensorReadingSchema>;

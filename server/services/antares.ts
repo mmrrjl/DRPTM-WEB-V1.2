@@ -8,7 +8,7 @@ export interface AntaresConfig {
 export interface AntaresData {
   temperature: number;
   ph: number;
-  waterLevel: number;
+  tdsLevel: number;
 }
 
 export class AntaresService {
@@ -53,7 +53,7 @@ export class AntaresService {
       return {
         temperature: parseFloat(sensorData.temperature) || 0,
         ph: parseFloat(sensorData.ph) || 0,
-        waterLevel: parseFloat(sensorData.waterLevel) || 0,
+        tdsLevel: parseFloat(sensorData.tdsLevel) || parseFloat(sensorData.waterLevel) || 0,
       };
     } catch (error) {
       console.error('Error fetching data from Antares:', error);
@@ -89,7 +89,7 @@ export class AntaresService {
         return {
           temperature: parseFloat(sensorData.temperature) || 0,
           ph: parseFloat(sensorData.ph) || 0,
-          waterLevel: parseFloat(sensorData.waterLevel) || 0,
+          tdsLevel: parseFloat(sensorData.tdsLevel) || parseFloat(sensorData.waterLevel) || 0,
         };
       }).reverse(); // Reverse to get chronological order
     } catch (error) {
