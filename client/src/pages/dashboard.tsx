@@ -112,7 +112,7 @@ export default function Dashboard() {
             value={latestReading?.temperature ?? 0}
             unit="°C"
             icon="thermometer"
-            trend={sensorReadings.length >= 2 ? latestReading!.temperature - sensorReadings[1].temperature : 0}
+            trend={sensorReadings.length >= 2 && latestReading ? latestReading.temperature - sensorReadings[1].temperature : 0}
             status={latestReading ? getTemperatureStatus(latestReading.temperature) : "unknown"}
             optimalRange="22-26°C"
           />
@@ -122,7 +122,7 @@ export default function Dashboard() {
             value={latestReading?.ph ?? 0}
             unit=""
             icon="flask"
-            trend={sensorReadings.length >= 2 ? latestReading!.ph - sensorReadings[1].ph : 0}
+            trend={sensorReadings.length >= 2 && latestReading ? latestReading.ph - sensorReadings[1].ph : 0}
             status={latestReading ? getPhStatus(latestReading.ph) : "unknown"}
             optimalRange="5.5-6.5"
           />
@@ -131,7 +131,7 @@ export default function Dashboard() {
             value={latestReading?.tdsLevel ?? 0}
             unit="ppm"
             icon="waves"
-            trend={sensorReadings.length >= 2 ? latestReading!.tdsLevel - sensorReadings[1].tdsLevel : 0}
+            trend={sensorReadings.length >= 2 && latestReading ? latestReading.tdsLevel - sensorReadings[1].tdsLevel : 0}
             status={latestReading ? getTdsLevelStatus(latestReading.tdsLevel) : "unknown"}
             optimalRange="800-1200 ppm"
           />
