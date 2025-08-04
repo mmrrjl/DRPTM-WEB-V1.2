@@ -51,9 +51,9 @@ export class AntaresService {
       const sensorData = typeof content === 'string' ? JSON.parse(content) : content;
       
       return {
-        temperature: parseFloat(sensorData.temperature) || 0,
-        ph: parseFloat(sensorData.ph) || 0,
-        tdsLevel: parseFloat(sensorData.tdsLevel) || parseFloat(sensorData.waterLevel) || 0,
+        temperature: parseFloat(sensorData.temperature || sensorData.temp || sensorData.Temperature) || 0,
+        ph: parseFloat(sensorData.ph || sensorData.pH || sensorData.PH) || 0,
+        tdsLevel: parseFloat(sensorData.tdsLevel || sensorData.tds || sensorData.TDS || sensorData.waterLevel) || 0,
       };
     } catch (error) {
       console.error('Error fetching data from Antares:', error);
@@ -87,9 +87,9 @@ export class AntaresService {
         const sensorData = typeof content === 'string' ? JSON.parse(content) : content;
         
         return {
-          temperature: parseFloat(sensorData.temperature) || 0,
-          ph: parseFloat(sensorData.ph) || 0,
-          tdsLevel: parseFloat(sensorData.tdsLevel) || parseFloat(sensorData.waterLevel) || 0,
+          temperature: parseFloat(sensorData.temperature || sensorData.temp || sensorData.Temperature) || 0,
+          ph: parseFloat(sensorData.ph || sensorData.pH || sensorData.PH) || 0,
+          tdsLevel: parseFloat(sensorData.tdsLevel || sensorData.tds || sensorData.TDS || sensorData.waterLevel) || 0,
         };
       }).reverse(); // Reverse to get chronological order
     } catch (error) {
