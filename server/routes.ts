@@ -126,6 +126,72 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Test hex decoding endpoint
+  app.post("/api/test-decode", async (req, res) => {
+    try {
+      console.log("=== TEST DECODE REQUEST ===");
+      console.log("Request body:", req.body);
+      
+      const { data } = req.body;
+      if (!data) {
+        console.log("No data field provided");
+        return res.status(400).json({ error: "Data field is required" });
+      }
+
+      console.log("Hex data to decode:", data);
+
+      // Test the hex decoding with the provided data
+      const decodedData = antaresService.testDecode(data);
+      console.log("Decoded data:", decodedData);
+      
+      // Manual calculation for verification
+      const tempHex = data.substr(0, 4);
+      const phHex = data.substr(4, 4);
+      const tdsHex = data.substr(8, 4);
+      
+      const tempDecimal = parseInt(tempHex, 16);
+      const phDecimal = parseInt(phHex, 16);
+      const tdsDecimal = parseInt(tdsHex, 16);
+
+      const result = {
+        success: true,
+        originalHex: data,
+        decodedData,
+        manualDecoding: {
+          temperature: {
+            hex: tempHex,
+            decimal: tempDecimal,
+            valueDiv10: tempDecimal / 10,
+            valueDiv100: tempDecimal / 100,
+            // Try different conversion methods
+            signedInt16: tempDecimal > 32767 ? tempDecimal - 65536 : tempDecimal,
+            signedDiv10: (tempDecimal > 32767 ? tempDecimal - 65536 : tempDecimal) / 10,
+            signedDiv100: (tempDecimal > 32767 ? tempDecimal - 65536 : tempDecimal) / 100,
+          },
+          ph: {
+            hex: phHex,
+            decimal: phDecimal,
+            valueDiv10: phDecimal / 10,
+            valueDiv100: phDecimal / 100,
+          },
+          tds: {
+            hex: tdsHex,
+            decimal: tdsDecimal,
+            valueDiv10: tdsDecimal / 10,
+            valueDiv100: tdsDecimal / 100,
+          }
+        }
+      };
+
+      console.log("Response result:", JSON.stringify(result, null, 2));
+      res.setHeader('Content-Type', 'application/json');
+      res.json(result);
+    } catch (error) {
+      console.error("Error testing decode:", error);
+      res.status(500).json({ error: "Failed to decode hex data" });
+    }
+  });
+
   // Export sensor data
   app.get("/api/export-data", async (req, res) => {
     try {

@@ -62,13 +62,64 @@ export class AntaresService {
           tdsLevel: 0, // Default TDS for greenhouse sensors
         };
       }
-
-      // Default decoding for your example format: temperature(4) + pH(4) + TDS(4)
-      if (cleanHex.length >= 12) {
+      
+      if (deviceCode.startsWith("HZ")) {
+        // Hydroponic (3 sensors - pH, TDS/EC, Temperature)
         return {
-          temperature: parseInt(cleanHex.substr(0, 4), 16) / 10,
-          ph: parseInt(cleanHex.substr(4, 4), 16) / 10,
-          tdsLevel: parseInt(cleanHex.substr(8, 4), 16) / 10,
+          ph: parseInt(hexString.substr(0, 4), 16) / 100,
+          tdsLevel: parseInt(hexString.substr(4, 4), 16) / 10, // TDS level
+          temperature: parseInt(hexString.substr(8, 4), 16) / 10,
+        };
+      }
+
+      // Hydroponic specific decoding format: temperature(4) + pH(4) + TDS(4)
+      if (cleanHex.length >= 12) {
+        const tempHex = cleanHex.substr(0, 4);
+        const phHex = cleanHex.substr(4, 4);
+        const tdsHex = cleanHex.substr(8, 4);
+        
+        const tempRaw = parseInt(tempHex, 16);
+        const phRaw = parseInt(phHex, 16);
+        const tdsRaw = parseInt(tdsHex, 16);
+        
+        let temperature;
+        
+        // Try different temperature decoding methods
+        if (tempRaw > 1000) {
+          // Try Little Endian byte swap for temperature
+          const tempLE = tempHex.substr(2, 2) + tempHex.substr(0, 2);
+          const tempLEDecimal = parseInt(tempLE, 16);
+          if (tempLEDecimal < 1000) {
+            temperature = tempLEDecimal / 10; // Little Endian format
+          } else {
+            // Fallback: try with offset
+            temperature = (tempRaw - 60000) / 100; // With offset adjustment
+          }
+        } else {
+          temperature = tempRaw / 10; // Standard format
+        }
+        
+        // Ensure reasonable temperature range (0-100°C for hydroponic)
+        if (temperature < 0 || temperature > 100) {
+          // Try alternative decoding
+          temperature = tempRaw / 100; // Try /100 instead
+          if (temperature < 0 || temperature > 100) {
+            // Last resort: use raw value as-is if it's reasonable
+            temperature = tempRaw < 100 ? tempRaw : tempRaw / 1000;
+          }
+        }
+        
+        // pH decoding - try /10 first for more reasonable range
+        let ph = phRaw / 10;
+        if (ph < 1 || ph > 14) {
+          // If pH is outside normal range, try /100
+          ph = phRaw / 100;
+        }
+        
+        return {
+          temperature: Math.round(temperature * 10) / 10, // Round to 1 decimal
+          ph: Math.round(ph * 10) / 10, // pH with proper scaling, rounded
+          tdsLevel: Math.round(tdsRaw / 10), // TDS in ppm, whole numbers
         };
       }
 
