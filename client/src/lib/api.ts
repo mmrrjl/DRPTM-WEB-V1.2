@@ -1,4 +1,4 @@
-import { apiRequest } from "./queryClient";
+  import { apiRequest } from "./queryClient";
 
 export async function syncAntaresData() {
   const response = await apiRequest("POST", "/api/sync-antares");
