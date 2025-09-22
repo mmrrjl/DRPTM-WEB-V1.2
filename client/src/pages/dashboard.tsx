@@ -1,7 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { Sprout, Settings, Cpu } from "lucide-react";
 import StatusCard from "@/components/status-card";
-import MultiMetricChart from "@/components/multi-metric-chart";
+import TemperatureChart from "@/components/temperature-chart";
+import PHChart from "@/components/ph-chart";
+import TDSChart from "@/components/tds-chart";
 import RecentReadings from "@/components/recent-readings";
 import SystemInfo from "@/components/system-info";
 import { Button } from "@/components/ui/button";
@@ -157,9 +159,18 @@ export default function Dashboard() {
         </div>
 
         {/* Charts Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <MultiMetricChart data={sensorReadings} isLoading={readingsLoading} />
-          <RecentReadings data={sensorReadings} isLoading={readingsLoading} />
+        <div className="space-y-6 mb-8">
+          {/* Individual Charts Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+            <TemperatureChart data={sensorReadings} isLoading={readingsLoading} />
+            <PHChart data={sensorReadings} isLoading={readingsLoading} />
+            <TDSChart data={sensorReadings} isLoading={readingsLoading} />
+          </div>
+          
+          {/* Recent Readings */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <RecentReadings data={sensorReadings} isLoading={readingsLoading} />
+          </div>
         </div>
 
         {/* Detailed Data Section */}
