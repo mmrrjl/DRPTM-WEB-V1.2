@@ -56,8 +56,7 @@ export default function Dashboard() {
   const getTemperatureStatus = (temp: number) =>
     getOptimalityStatus(temp, 22, 26);
   const getPhStatus = (ph: number) => getOptimalityStatus(ph, 5.5, 6.5);
-  const getTdsLevelStatus = (tds: number) =>
-    getOptimalityStatus(tds, 300, 500);
+  const getTdsLevelStatus = (tds: number) => getOptimalityStatus(tds, 300, 500);
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -161,23 +160,20 @@ export default function Dashboard() {
         {/* Charts Section */}
         <div className="space-y-6 mb-8">
           {/* Individual Charts Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div className="flex flex-col gap-6">
             <TemperatureChart data={sensorReadings} isLoading={readingsLoading} />
             <PHChart data={sensorReadings} isLoading={readingsLoading} />
             <TDSChart data={sensorReadings} isLoading={readingsLoading} />
           </div>
-          
-          {/* Recent Readings */}
+
+          {/* Recent Readings + System Info in one row */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <RecentReadings data={sensorReadings} isLoading={readingsLoading} />
+            <SystemInfo systemStatus={systemStatus} />
           </div>
         </div>
+        </main>
 
-        {/* Detailed Data Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <SystemInfo systemStatus={systemStatus} />
-        </div>
-      </main>
 
       {/* Footer */}
       <footer className="bg-white border-t border-slate-200 mt-12">

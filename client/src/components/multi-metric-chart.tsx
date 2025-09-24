@@ -314,7 +314,7 @@ export default function SeparateSensorCharts({
       </div>
 
       {/* Separate Charts */}
-      <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+      <div className="flex flex-col gap-6">
         <TemperatureChart data={data} isLoading={isLoading} range={range} />
         <PHChart data={data} isLoading={isLoading} range={range} />
         <TDSChart data={data} isLoading={isLoading} range={range} />
