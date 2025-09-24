@@ -123,36 +123,79 @@ export class AntaresService {
 
   async fetchLatestData(): Promise<AntaresData | null> {
     try {
-      const response = await fetch(
-        `${this.config.baseUrl}/${this.config.applicationId}/${this.config.deviceId}/la`,
-        {
-          method: 'GET',
-          headers: {
-            'X-M2M-Origin': this.config.apiKey,
-            'Content-Type': 'application/json;ty=4',
-            'Accept': 'application/json',
-          },
-        }
-      );
+      // Validate configuration
+      if (!this.config.apiKey || this.config.apiKey === 'demo_key') {
+        console.warn('Antares API key not configured, using demo data');
+        return this.getDemoData();
+      }
+
+      if (!this.config.applicationId || !this.config.deviceId) {
+        console.error('Antares configuration incomplete:', {
+          applicationId: this.config.applicationId,
+          deviceId: this.config.deviceId
+        });
+        return null;
+      }
+
+      const url = `${this.config.baseUrl}/${this.config.applicationId}/${this.config.deviceId}/la`;
+      console.log('Fetching from Antares URL:', url);
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'X-M2M-Origin': this.config.apiKey,
+          'Content-Type': 'application/json;ty=4',
+          'Accept': 'application/json',
+          'User-Agent': 'Hydroponic-Monitor/1.0',
+        },
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+
+      console.log('Antares API response status:', response.status);
 
       if (!response.ok) {
-        throw new Error(`Antares API error: ${response.status} ${response.statusText}`);
+        const errorText = await response.text();
+        console.error('Antares API error response:', errorText);
+        throw new Error(`Antares API error: ${response.status} ${response.statusText} - ${errorText}`);
       }
 
       const data = await response.json();
+      console.log('Antares API response data:', JSON.stringify(data, null, 2));
 
       // Parse the Antares response format
       const content = data['m2m:cin']?.con;
       if (!content) {
+        console.error('Invalid response format from Antares API:', data);
         throw new Error('Invalid response format from Antares API');
       }
 
-      return this.parseContent(content);
+      const parsedData = this.parseContent(content);
+      console.log('Parsed Antares data:', parsedData);
+      return parsedData;
 
     } catch (error) {
-      console.error('Error fetching data from Antares:', error);
+      if (error.name === 'AbortError') {
+        console.error('Antares API request timeout');
+      } else {
+        console.error('Error fetching data from Antares:', error);
+      }
       return null;
     }
+  }
+
+  private getDemoData(): AntaresData {
+    // Return demo data when API is not configured
+    return {
+      temperature: 25.5 + Math.random() * 5,
+      ph: 6.8 + Math.random() * 0.4,
+      tdsLevel: 800 + Math.random() * 200,
+      humidity: 60 + Math.random() * 20,
+    };
   }
 
   async fetchHistoricalData(limit = 100): Promise<AntaresData[]> {
