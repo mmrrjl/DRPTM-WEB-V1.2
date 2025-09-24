@@ -1,11 +1,11 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { storage } from "./storage.js";
+import { storage } from "./storage";
 import {
   insertSensorReadingSchema,
   insertAlertSettingsSchema,
 } from "@shared/schema.js";
-import { antaresService } from "./services/antares.js";
+import { antaresService } from "./services/antares";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Get recent sensor readings
@@ -33,7 +33,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const readings = await storage.getSensorReadingsByTimeRange(
         startTime as string,
-        endTime as string,
+        endTime as string
       );
       res.json(readings);
     } catch (error) {
@@ -131,7 +131,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       console.log("=== TEST DECODE REQUEST ===");
       console.log("Request body:", req.body);
-      
+
       const { data } = req.body;
       if (!data) {
         console.log("No data field provided");
@@ -143,12 +143,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Test the hex decoding with the provided data
       const decodedData = antaresService.testDecode(data);
       console.log("Decoded data:", decodedData);
-      
+
       // Manual calculation for verification
       const tempHex = data.substr(0, 4);
       const phHex = data.substr(4, 4);
       const tdsHex = data.substr(8, 4);
-      
+
       const tempDecimal = parseInt(tempHex, 16);
       const phDecimal = parseInt(phHex, 16);
       const tdsDecimal = parseInt(tdsHex, 16);
@@ -164,9 +164,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
             valueDiv10: tempDecimal / 10,
             valueDiv100: tempDecimal / 100,
             // Try different conversion methods
-            signedInt16: tempDecimal > 32767 ? tempDecimal - 65536 : tempDecimal,
-            signedDiv10: (tempDecimal > 32767 ? tempDecimal - 65536 : tempDecimal) / 10,
-            signedDiv100: (tempDecimal > 32767 ? tempDecimal - 65536 : tempDecimal) / 100,
+            signedInt16:
+              tempDecimal > 32767 ? tempDecimal - 65536 : tempDecimal,
+            signedDiv10:
+              (tempDecimal > 32767 ? tempDecimal - 65536 : tempDecimal) / 10,
+            signedDiv100:
+              (tempDecimal > 32767 ? tempDecimal - 65536 : tempDecimal) / 100,
           },
           ph: {
             hex: phHex,
@@ -179,12 +182,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
             decimal: tdsDecimal,
             valueDiv10: tdsDecimal / 10,
             valueDiv100: tdsDecimal / 100,
-          }
-        }
+          },
+        },
       };
 
       console.log("Response result:", JSON.stringify(result, null, 2));
-      res.setHeader('Content-Type', 'application/json');
+      res.setHeader("Content-Type", "application/json");
       res.json(result);
     } catch (error) {
       console.error("Error testing decode:", error);
@@ -201,7 +204,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (startTime && endTime) {
         readings = await storage.getSensorReadingsByTimeRange(
           startTime as string,
-          endTime as string,
+          endTime as string
         );
       } else {
         readings = await storage.getSensorReadings(1000); // Export last 1000 readings
@@ -216,14 +219,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
         res.setHeader("Content-Type", "text/csv");
         res.setHeader(
           "Content-Disposition",
-          "attachment; filename=sensor-data.csv",
+          "attachment; filename=sensor-data.csv"
         );
         res.send(csvHeaders + csvData);
       } else {
         res.setHeader("Content-Type", "application/json");
         res.setHeader(
           "Content-Disposition",
-          "attachment; filename=sensor-data.json",
+          "attachment; filename=sensor-data.json"
         );
         res.json(readings);
       }
