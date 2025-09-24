@@ -1,4 +1,4 @@
-import { type SensorReading, type InsertSensorReading, type SystemStatus, type AlertSettings } from "@shared/schema";
+import { type SensorReading, type InsertSensorReading, type SystemStatus, type AlertSettings } from "@shared/schema.js";
 import { randomUUID } from "crypto";
 
 export interface IStorage {

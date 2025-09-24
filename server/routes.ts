@@ -1,11 +1,11 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { storage } from "./storage";
+import { storage } from "./storage.js";
 import {
   insertSensorReadingSchema,
   insertAlertSettingsSchema,
-} from "@shared/schema";
-import { antaresService } from "./services/antares";
+} from "@shared/schema.js";
+import { antaresService } from "./services/antares.js";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Get recent sensor readings

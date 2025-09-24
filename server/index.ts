@@ -1,20 +1,27 @@
 import "dotenv/config";
 import express, { type Request, Response, NextFunction } from "express";
 import cors from "cors";
-import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
+import { registerRoutes } from "./routes.js";
+import { setupVite, serveStatic, log } from "./vite.js";
 
 const app = express();
 
 // CORS configuration
-app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://your-vercel-app.vercel.app'] // Replace with your actual Vercel domain
-    : ['http://localhost:3000', 'http://localhost:5000', 'http://127.0.0.1:5000'],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-M2M-Origin']
-}));
+app.use(
+  cors({
+    origin:
+      process.env.NODE_ENV === "production"
+        ? ["https://your-vercel-app.vercel.app"] // Replace with your actual Vercel domain
+        : [
+            "http://localhost:3000",
+            "http://localhost:5000",
+            "http://127.0.0.1:5000",
+          ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-M2M-Origin"],
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
